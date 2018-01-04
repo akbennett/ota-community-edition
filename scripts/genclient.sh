@@ -7,7 +7,8 @@ export DEVICE_ID=${1}
 readonly KUBE_IP=$(minikube ip)
 export DEVICE_UUID=$(uuidgen)
 readonly REGISTRY_HOST=$(kubectl get ingress -o jsonpath --template='{.items[?(@.metadata.name=="device-registry")].spec.rules[0].host}')
-readonly DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/../${SERVERNAME}
+readonly DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/../${SERVERNAME}/devices/${DEVICE_ID}
+mkdir -p ${DIR}
 
 openssl ecparam -genkey -name prime256v1 | openssl ec -out ${DIR}/${DEVICE_ID}.key
 openssl req -new -config client.cnf -key ${DIR}/${DEVICE_ID}.key -out ${DIR}/${DEVICE_ID}.csr
